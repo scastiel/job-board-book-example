@@ -1,5 +1,6 @@
 import { NextApiHandler } from 'next'
-import { getJobs, GetJobsOptions } from '../../lib/jobs'
+import { GetJobsOptions } from '../../lib/jobs'
+import { getJobs } from '../../lib/jobs_server'
 
 const handle: NextApiHandler = async (req, res) => {
   if (req.method !== 'GET') {
