@@ -1,11 +1,4 @@
-export interface Job {
-  id: string
-  jobTitle: string
-  company: string
-  description: string
-  applyUrl: string
-  date: Date
-}
+import { Job } from '@prisma/client'
 
 export type JobSummary = Omit<Job, 'applyUrl' | 'description'>
 
