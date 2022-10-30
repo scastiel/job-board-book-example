@@ -1,12 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { JobSummary } from './jobs'
 
-export const useJobs = (page?: number, jobTitle?: string, company?: string) => {
-  const [jobs, setJobs] = useState<JobSummary[]>([])
+export const useJobs = (
+  initialJobs: JobSummary[],
+  page?: number,
+  jobTitle?: string,
+  company?: string
+) => {
+  const [jobs, setJobs] = useState<JobSummary[]>(initialJobs)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
+  const isFirstRef = useRef(true)
+
   useEffect(() => {
+    if (isFirstRef.current === true) {
+      isFirstRef.current = false
+      return
+    }
+
     setLoading(true)
     setError(false)
 

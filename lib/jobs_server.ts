@@ -25,3 +25,8 @@ export const getJobs = async ({
     .sort((first, second) => second.date.valueOf() - first.date.valueOf())
     .slice((page - 1) * 10, page * 10)
 }
+
+export const getJob = async (id: string): Promise<Job | undefined> => {
+  const jobs = await readJobsFromJson()
+  return jobs.find((job) => job.id === id)
+}

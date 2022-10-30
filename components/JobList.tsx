@@ -1,12 +1,18 @@
+import Link from 'next/link'
 import { useState } from 'react'
 import { formatDate } from '../lib/dates'
 import { useJobs } from '../lib/hooks'
+import { JobSummary } from '../lib/jobs'
 
-export const JobList = () => {
+export interface Props {
+  initialJobs: JobSummary[]
+}
+
+export const JobList = ({ initialJobs }: Props) => {
   const [page, setPage] = useState(1)
   const [company, setCompany] = useState('')
   const [jobTitle, setJobTitle] = useState('')
-  const { loading, error, jobs } = useJobs(page, jobTitle, company)
+  const { loading, error, jobs } = useJobs(initialJobs, page, jobTitle, company)
 
   return (
     <>
@@ -33,7 +39,9 @@ export const JobList = () => {
         <ul>
           {jobs.map((job) => (
             <li key={job.id}>
-              <strong>{job.jobTitle}</strong> at <em>{job.company}</em>{' '}
+              <Link href={`/jobs/${job.id}`}>
+                <strong>{job.jobTitle}</strong> at <em>{job.company}</em>
+              </Link>{' '}
               <small>({formatDate(job.date)})</small>
             </li>
           ))}
