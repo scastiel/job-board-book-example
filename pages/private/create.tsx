@@ -1,22 +1,41 @@
 import { NextPage } from 'next'
 import { Layout } from '../../components/Layout'
+import { JobFormValues } from '../../lib/jobForm'
+import { useRouter } from 'next/router'
+import { JobForm } from '../../components/JobForm'
 
 const PostJobPage: NextPage = () => {
+  const router = useRouter()
+
+  const initialValues: JobFormValues = {
+    jobTitle: '',
+    company: '',
+    description: '',
+    applyUrl: '',
+  }
+
+  const onSubmit = (values: JobFormValues) => {
+    fetch('/api/create-job', {
+      method: 'POST',
+      body: JSON.stringify(values),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.jobId) {
+          router.push(`/jobs/${res.jobId}`)
+        }
+      })
+      .catch(console.error)
+  }
+
   return (
     <Layout title="Post a job">
       <h2>Post a new job</h2>
-      <p>This page can be seen only by authenticated users.</p>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault()
-          fetch('/api/create-job', { method: 'POST' })
-            .then((res) => res.json())
-            .then(console.log)
-            .catch(console.error)
-        }}
-      >
-        <button type="submit">Create a job</button>
-      </form>
+      <JobForm
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        buttonText="Create"
+      />
     </Layout>
   )
 }

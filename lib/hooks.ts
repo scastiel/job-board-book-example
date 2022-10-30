@@ -1,5 +1,27 @@
 import { useEffect, useRef, useState } from 'react'
 import type { JobSummary } from './jobs'
+import useSWR from 'swr'
+import { User } from '@prisma/client'
+import { useSession } from 'next-auth/react'
+
+const fetchUser = async (
+  status: 'loading' | 'authenticated' | 'unauthenticated'
+) => {
+  if (status === 'authenticated') {
+    const res = await fetch('/api/me')
+    return res.json()
+  }
+  return null
+}
+
+export const useCurrentUser = () => {
+  const { status } = useSession()
+  const { data: user } = useSWR<User | null>(status, fetchUser)
+  if (user === undefined) {
+    return { loading: true, user: null }
+  }
+  return { loading: false, user }
+}
 
 export const useJobs = (
   initialJobs: JobSummary[],

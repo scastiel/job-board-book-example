@@ -1,6 +1,6 @@
 import { Job } from '@prisma/client'
 
-export type JobSummary = Omit<Job, 'applyUrl' | 'description'>
+export type JobSummary = Omit<Job, 'applyUrl' | 'description' | 'userId'>
 
 export interface GetJobsOptions {
   page?: number

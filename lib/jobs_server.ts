@@ -1,5 +1,4 @@
-import { Job } from '@prisma/client'
-import { readFile } from 'fs/promises'
+import { Job, User } from '@prisma/client'
 import { GetJobsOptions, JobSummary } from './jobs'
 import prisma from './prisma_server'
 
@@ -27,7 +26,12 @@ export async function getJobs({
   })
 }
 
-export const getJob = async (id: string): Promise<Job | undefined> => {
-  const job = await prisma.job.findUnique({ where: { id } })
+export const getJob = async (
+  id: string
+): Promise<(Job & { user: User | null }) | undefined> => {
+  const job = await prisma.job.findUnique({
+    where: { id },
+    include: { user: true },
+  })
   return job ?? undefined
 }

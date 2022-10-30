@@ -1,28 +1,29 @@
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import { useCurrentUser } from '../lib/hooks'
 
 export const AuthMenu = () => {
-  const { data: session, status } = useSession()
+  const { user, loading } = useCurrentUser()
 
-  switch (status) {
-    case 'loading':
-      return <>Loading…</>
-    case 'unauthenticated':
-      return (
-        <a href="#" onClick={() => signIn()}>
-          Sign in
-        </a>
-      )
-    case 'authenticated':
-      return (
-        <>
-          <Link href="/private/create">Post a job</Link> · {session.user?.name}{' '}
-          (
-          <a href="#" onClick={() => signOut({ callbackUrl: '/' })}>
-            Sign out
-          </a>
-          )
-        </>
-      )
+  if (loading) {
+    return <>Loading…</>
   }
+
+  if (user === null) {
+    return (
+      <a href="#" onClick={() => signIn()}>
+        Sign in
+      </a>
+    )
+  }
+
+  return (
+    <>
+      <Link href="/private/create">Post a job</Link> · {user.name} (
+      <a href="#" onClick={() => signOut({ callbackUrl: '/' })}>
+        Sign out
+      </a>
+      )
+    </>
+  )
 }

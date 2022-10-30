@@ -1687,3 +1687,14 @@ body > footer {
     text-decoration: underline;
   }
 }
+
+form > section {
+  margin-bottom: .75em;
+}
+
+.error {
+  display: block;
+  color: red;
+  font-size: small;
+  margin-top: -0.25em;
+}

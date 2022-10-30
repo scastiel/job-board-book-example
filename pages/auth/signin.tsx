@@ -1,11 +1,11 @@
 import { GetServerSideProps, NextPage } from 'next'
-import { getToken } from 'next-auth/jwt'
 import { signIn } from 'next-auth/react'
 import { useEffect } from 'react'
+import { getCurrentUser } from '../../lib/user_server'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const token = await getToken({ req: context.req })
-  if (token) {
+  const user = await getCurrentUser({ req: context.req })
+  if (user) {
     return {
       redirect: {
         destination: String(context.query.callbackUrl || '/'),

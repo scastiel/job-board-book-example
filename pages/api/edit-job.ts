@@ -1,17 +1,29 @@
 import { NextApiHandler } from 'next'
-import { getCurrentUser } from '../../lib/user_server'
 import { JobFormValues, validateJobFormValues } from '../../lib/jobForm'
+import { getJob } from '../../lib/jobs_server'
 import prisma from '../../lib/prisma_server'
+import { getCurrentUser } from '../../lib/user_server'
 
 const handle: NextApiHandler = async (req, res) => {
   if (req.method !== 'POST') {
-    res.status(405).send({ ok: false })
+    res.status(405).end()
     return
   }
 
   const user = await getCurrentUser({ req })
   if (!user) {
     res.status(401).send({ ok: false })
+    return
+  }
+
+  const jobId = String(req.query.id)
+  const job = await getJob(jobId)
+  if (!job) {
+    res.status(404).send({ ok: false })
+    return
+  }
+  if (job.userId !== user.id) {
+    res.status(403).send({ ok: false })
     return
   }
 
@@ -23,19 +35,19 @@ const handle: NextApiHandler = async (req, res) => {
     return
   }
 
-  const job = await prisma.job.create({
+  await prisma.job.update({
+    where: { id: jobId },
     data: {
-      // id and date are filled automatically, as specified
-      // in the model
       jobTitle: values.jobTitle,
       company: values.company,
       description: values.description,
       applyUrl: values.applyUrl,
-      userId: user.id,
     },
   })
 
-  res.send({ jobId: job.id })
+  await res.revalidate(`/jobs/${job.id}`)
+
+  res.send({ ok: true })
 }
 
 export default handle
