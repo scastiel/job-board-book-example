@@ -1,3 +1,17 @@
+This is the repository containing the example project of the book [Serverless Web Applications With React and Next.js](https://www.amazon.com/dp/B0BHRPMF74).
+
+It contains one branch per chapter:
+
+- [Chapter 1](https://github.com/scastiel/job-board-book-example/tree/chapter-1)
+- [Chapter 2](https://github.com/scastiel/job-board-book-example/tree/chapter-2)
+- [Chapter 3](https://github.com/scastiel/job-board-book-example/tree/chapter-3)
+- [Chapter 4](https://github.com/scastiel/job-board-book-example/tree/chapter-4)
+- [Chapter 5](https://github.com/scastiel/job-board-book-example/tree/chapter-5)
+- [Chapter 6](https://github.com/scastiel/job-board-book-example/tree/chapter-6)
+
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
