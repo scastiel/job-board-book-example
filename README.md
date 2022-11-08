@@ -9,6 +9,7 @@ It contains one branch per chapter:
 - [Chapter 5](https://github.com/scastiel/job-board-book-example/tree/chapter-5)
 - [Chapter 6](https://github.com/scastiel/job-board-book-example/tree/chapter-6)
 
+The final application is deployed here: https://serverless-web-apps-book.vercel.app/
 
 ---
 
